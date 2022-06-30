@@ -287,6 +287,11 @@ def get_finding_filterset_fields(metrics=False, similar=False):
                 'has_jira_group_issue',
             ])
 
+    """if get_system_setting('enable_finding_sla'):
+        fields.extend([
+            'sla_age',
+        ])"""
+
     return fields
 
 
@@ -1285,6 +1290,12 @@ class FindingFilter(FindingFilterWithTags):
                                         lookup_expr='isnull',
                                         exclude=True,
                                         label='Has Group JIRA')
+
+    if get_system_setting('enable_finding_sla'):
+        out_of_sla = BooleanFilter(field_name='sla_age',
+                                       lookup_expr='isnull',
+                                       exclude=True,
+                                       label='Out of SLA')
 
     has_component = BooleanFilter(field_name='component_name',
                                 lookup_expr='isnull',
